@@ -1,0 +1,75 @@
+# Zsh + Prezto Prompt custom setup, based off wikimatze's prompt
+# https://gist.github.com/wikimatze/4c2fbaf8ebe1e8ce0c1f#file-prompt_wikimatze_setup
+# https://wikimatze.de/better-zsh-with-prezto/
+
+function prompt_mathielo_precmd {
+  git-info
+}
+
+function prompt_mathielo_setup {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
+  prompt_opts=(cr percent subst)
+
+  # Load required functions.
+  autoload -Uz add-zsh-hook
+
+  # Add hook for calling git-info before each command.
+  add-zsh-hook precmd prompt_mathielo_precmd
+
+  # Use extended color pallete if available.
+  if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
+    # Prompt Colors
+    pmpt_clr=(
+      "%F{001}" # Red
+      "%F{208}" # Strong Orange
+      "%F{214}" # Light Orange
+    )
+    # Git Colors
+    git_clr=(
+      "%F{253}" # Light Gray
+      "%F{071}" # Green
+      "%F{001}" # Red
+      "%F{214}" # Yellow
+    )
+  else
+    pmpt_clr=(
+      "%F{red}"
+      "%F{orange}"
+      "%F{yellow}"
+    )
+    git_clr=(
+      "%F{white}" # Light Gray
+      "%F{green}" # Green
+      "%F{red}" # Red
+      "%F{yellow}" # Yellow
+    )
+  fi
+
+  # Set git-info parameters.
+  # https://github.com/sorin-ionescu/prezto/tree/master/modules/git#theming
+  zstyle ':prezto:module:git:info' verbose 'yes'
+  zstyle ':prezto:module:git:info:branch' format "${git_clr[1]}%b%f"
+  zstyle ':prezto:module:git:info:position' format "${git_clr[2]}%p%f:"
+  zstyle ':prezto:module:git:info:commit' format "${git_clr[3]}%c%f"
+
+  # Verbose contexts (to be displayed in the "Right Prompt")
+  zstyle ':prezto:module:git:info:ahead' format " %%B${git_clr[2]}⬆ %f%%b"
+  zstyle ':prezto:module:git:info:behind' format " %%B${git_clr[3]}⬇ %f%%b"
+  zstyle ':prezto:module:git:info:stashed' format " %%B${git_clr[4]}⭑%f%%b"
+  zstyle ':prezto:module:git:info:clean' format " ${git_clr[2]}✓%f"
+  zstyle ':prezto:module:git:info:dirty' format " ${git_clr[3]}✗%f"
+  zstyle ':prezto:module:git:info:untracked' format " %%B${git_clr[4]}?%f%%b"
+
+  zstyle ':prezto:module:git:info:remote' format "${git_clr[1]}[%f${git_clr[4]}%R%f${git_clr[1]}]%f"
+
+  zstyle ':prezto:module:git:info:keys' format \
+      'prompt' ' ${git_clr[1]}(%f$(coalesce %b %p%c)%s${git_clr[1]})%f' \
+      'rprompt' '%A%B%S%C%D%U%u %R'
+
+  # Define prompts.
+  PROMPT="%n%f${pmpt_clr[1]}@${pmpt_clr[2]}%m%f ${pmpt_clr[3]}%~%f"'${(e)git_info[prompt]}'" ${pmpt_clr[3]}$%f "
+  RPROMPT='${git_info[rprompt]}'
+}
+
+prompt_mathielo_setup "$@"

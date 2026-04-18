@@ -8,15 +8,15 @@ Personal shell, Vim, and terminal config. Bash + starship on Fedora/macOS.
 git clone git@github.com/mathielo/dotfiles.git ~/.dotfiles && ~/.dotfiles/install.sh
 ```
 
-The installer symlinks from this repo into `$HOME` (backing up any pre-existing regular file as `<name>.bak.<timestamp>`):
+The installer prompts before overwriting any existing file. Most files are symlinked; `~/.bash_profile` is copied so it can be customized per machine.
 
-| Symlink | Target |
-|---|---|
-| `~/.bashrc` | `~/.dotfiles/bashrc` |
-| `~/.bash_profile` | `~/.dotfiles/bash_profile` |
-| `~/.inputrc` | `~/.dotfiles/inputrc` |
-| `~/.vimrc` | `~/.dotfiles/vimrc` |
-| `~/.config/starship.toml` | `~/.dotfiles/starship.toml` |
+| File                      | Source                      | Method  |
+| ------------------------- | --------------------------- | ------- |
+| `~/.bash_profile`         | `~/.dotfiles/bash_profile`  | copy    |
+| `~/.bashrc`               | `~/.dotfiles/bashrc`        | symlink |
+| `~/.inputrc`              | `~/.dotfiles/inputrc`       | symlink |
+| `~/.vimrc`                | `~/.dotfiles/vimrc`         | symlink |
+| `~/.config/starship.toml` | `~/.dotfiles/starship.toml` | symlink |
 
 # Install starship
 

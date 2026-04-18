@@ -3,24 +3,16 @@ set -euo pipefail
 
 DOTFILES="${HOME}/.dotfiles"
 
-backup_and_link() {
-  local src="$1" dst="$2"
-  if [[ -e "$dst" && ! -L "$dst" ]]; then
-    mv "$dst" "${dst}.bak.$(date +%s)"
-  fi
-  mkdir -p "$(dirname "$dst")"
-  ln -sfn "$src" "$dst"
-}
+mkdir -p "$HOME/.config"
 
-backup_and_link "$DOTFILES/bashrc"         "$HOME/.bashrc"
-backup_and_link "$DOTFILES/bash_profile"   "$HOME/.bash_profile"
-backup_and_link "$DOTFILES/inputrc"        "$HOME/.inputrc"
-backup_and_link "$DOTFILES/vimrc"          "$HOME/.vimrc"
-backup_and_link "$DOTFILES/starship.toml"  "$HOME/.config/starship.toml"
-
-mkdir -p "$HOME/.vim/sessions"
+ln -isn "$DOTFILES/bashrc"        "$HOME/.bashrc"
+ln -isn "$DOTFILES/inputrc"       "$HOME/.inputrc"
+ln -isn "$DOTFILES/vimrc"         "$HOME/.vimrc"
+ln -isn "$DOTFILES/starship.toml" "$HOME/.config/starship.toml"
+cp -i   "$DOTFILES/bash_profile"  "$HOME/.bash_profile"
 
 git config --global core.editor "vim"
+git config --global commit.gpgsign true
 
 command -v starship >/dev/null || cat <<'EOF'
 

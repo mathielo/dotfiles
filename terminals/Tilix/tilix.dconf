@@ -1,0 +1,45 @@
+[/]
+new-window-inherit-state=true
+prompt-on-close=true
+use-overlay-scrollbar=true
+copy-on-select=true
+sidebar-on-right=false
+terminal-title-style='none'
+window-state=43908
+theme-variant='dark'
+session-name='${username}@${hostname} -  ${directory}'
+quake-hide-headerbar=true
+enable-wide-handle=false
+prompt-on-new-session=false
+window-save-state=true
+warn-vte-config-issue=false
+control-click-titlebar=true
+terminal-title-show-when-single=false
+window-style='borderless'
+
+[profiles/cb10477e-023d-404c-b8f2-b15202f25fda]
+foreground-color='#EEEEEEEEECEC'
+visible-name='Mathielo'
+login-shell=false
+palette=['#1E1E1E', '#CF6A4C', '#8F9D6A', '#F9EE98', '#7587A6', '#9B859D', '#AFC4DB', '#A7A7A7', '#5F5A60', '#CF6A4C', '#8F9D6A', '#F9EE98', '#7587A6', '#9B859D', '#AFC4DB', '#EDEDEB']
+badge-color-set=true
+show-scrollbar=false
+use-system-font=false
+cursor-colors-set=false
+highlight-colors-set=false
+use-theme-colors=false
+bold-color-set=false
+font='Monospace 9'
+terminal-bell='none'
+terminal-title='${username} @ ${hostname} -  ${directory}'
+background-color='#303030'
+background-transparency-percent=22
+dim-transparency-percent=12
+
+[profiles]
+list=['cb10477e-023d-404c-b8f2-b15202f25fda']
+default='cb10477e-023d-404c-b8f2-b15202f25fda'
+
+[keybindings]
+session-synchronize-input='<Primary><Shift><Alt>a'
+app-preferences='<Primary><Alt>s'

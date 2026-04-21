@@ -3,23 +3,81 @@ set -euo pipefail
 
 DOTFILES="${HOME}/.dotfiles"
 
-mkdir -p "$HOME/.config"
+# --- Detect OS ---
+case "$(uname -s)" in
+  Darwin) OS="macos" ;;
+  Linux)
+    if [[ -f /etc/fedora-release ]]; then
+      OS="fedora"
+    else
+      echo "Only Fedora (Linux) and macOS are supported. See README for manual install."
+      exit 1
+    fi
+    ;;
+  *)
+    echo "Unsupported OS. Only Fedora and macOS are supported."
+    exit 1
+    ;;
+esac
+echo ">> Detected OS: $OS"
 
-ln -isn "$DOTFILES/bashrc"        "$HOME/.bashrc"
-ln -isn "$DOTFILES/inputrc"       "$HOME/.inputrc"
-ln -isn "$DOTFILES/vimrc"         "$HOME/.vimrc"
-ln -isn "$DOTFILES/starship.toml" "$HOME/.config/starship.toml"
-cp -i   "$DOTFILES/bash_profile"  "$HOME/.bash_profile"
+# --- Install packages ---
+if [[ "$OS" == "macos" ]]; then
+  command -v brew >/dev/null || { echo "Install Homebrew first: https://brew.sh"; exit 1; }
+  brew install zsh starship zoxide fzf eza bat ripgrep fd git-delta
+  brew install --cask font-meslo-lg-nerd-font
+else
+  sudo dnf copr enable atim/starship
+  sudo dnf install -y zsh starship zoxide fzf eza bat ripgrep fd-find git-delta
 
+  # MesloLGS Nerd Font (Fedora doesn't ship this specific one)
+  FONT_DIR="$HOME/.local/share/fonts"
+  if ! fc-list 2>/dev/null | grep -qi "MesloLGS NF"; then
+    echo ">> Installing MesloLGS Nerd Font to $FONT_DIR"
+    mkdir -p "$FONT_DIR"
+    base="https://github.com/romkatv/powerlevel10k-media/raw/master"
+    curl -fsSL -o "$FONT_DIR/MesloLGS NF Regular.ttf"     "$base/MesloLGS%20NF%20Regular.ttf"
+    curl -fsSL -o "$FONT_DIR/MesloLGS NF Bold.ttf"        "$base/MesloLGS%20NF%20Bold.ttf"
+    curl -fsSL -o "$FONT_DIR/MesloLGS NF Italic.ttf"      "$base/MesloLGS%20NF%20Italic.ttf"
+    curl -fsSL -o "$FONT_DIR/MesloLGS NF Bold Italic.ttf" "$base/MesloLGS%20NF%20Bold%20Italic.ttf"
+    fc-cache -f "$FONT_DIR" >/dev/null
+  fi
+fi
+
+# --- Symlink configs ---
+ln -isn "$DOTFILES/zshrc"       "$HOME/.zshrc"
+ln -isn "$DOTFILES/zimrc"       "$HOME/.zimrc"
+ln -isn "$DOTFILES/vimrc"       "$HOME/.vimrc"
+ln -isn "$DOTFILES/aliases.zsh" "$HOME/.aliases.zsh"
+
+# Per-machine local overrides (copy, not symlink, so it can be tuned per-machine)
+cp -i "$DOTFILES/zshrc.local" "$HOME/.zshrc.local"
+
+# Starship Gruvbox Rainbow preset — generated, not symlinked (upstream-tracked)
+starship preset gruvbox-rainbow -o "$HOME/.config/starship.toml"
+
+# --- Git config ---
 git config --global core.editor "vim"
 git config --global commit.gpgsign true
+git config --global core.pager "delta"
+git config --global interactive.diffFilter "delta --color-only"
+git config --global delta.navigate true
+git config --global merge.conflictstyle "zdiff3"
 
-command -v starship >/dev/null || cat <<'EOF'
+# --- Switch default shell to zsh ---
+ZSH_PATH="$(command -v zsh)"
+if [[ "${SHELL:-}" != "$ZSH_PATH" ]]; then
+  echo ">> Changing default shell to zsh — may prompt for password"
+  chsh -s "$ZSH_PATH"
+fi
 
-starship is not installed. Install it, then re-open your terminal:
-    Fedora:  sudo dnf install starship
-    macOS:   brew install starship
-    Other:   https://starship.rs/#quick-install
+cat <<'EOF'
+
+Done.
+
+Next:
+- Open a new terminal (log out/in if chsh was applied).
+- First zsh launch auto-installs zimfw plugins (a few seconds).
+- Set your terminal font to "MesloLGS NF" for the prompt glyphs.
+- Per-machine tweaks go in ~/.zshrc.local (ignored by the dotfiles repo).
 EOF
-
-echo "Dotfiles installed. Open a fresh terminal."

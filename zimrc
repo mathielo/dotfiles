@@ -1,0 +1,15 @@
+# zimfw modules — see https://github.com/zimfw/zimfw
+
+# --- Completion (runs compinit; load completion-adding modules before this) ---
+zmodule completion
+
+# --- Utility / quality-of-life ---
+zmodule environment
+zmodule input
+zmodule utility
+
+# --- Must be sourced last, in this order ---
+zmodule Aloxaf/fzf-tab
+zmodule zsh-users/zsh-autosuggestions
+zmodule zdharma-continuum/fast-syntax-highlighting
+zmodule zsh-users/zsh-history-substring-search

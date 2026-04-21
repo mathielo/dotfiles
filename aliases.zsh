@@ -1,25 +1,7 @@
-# Interactive only
-case $- in
-  *i*) ;;
-    *) return;;
-esac
-
-# History
-HISTSIZE=10000
-HISTFILESIZE=20000
-shopt -s histappend
-shopt -s cmdhist
-
-# Shell behavior
-shopt -s autocd
-shopt -s globstar
-shopt -s extglob
-shopt -s checkwinsize
-
-# Bash completion (Fedora/Debian path)
-if [[ -r /usr/share/bash-completion/bash_completion ]]; then
-  . /usr/share/bash-completion/bash_completion
-fi
+# Shell aliases and small functions. Sourced by ~/.zshrc.
+#
+# These come *after* zimfw modules load, so overrides win.
+# Stock zimfw already provides: grep, df, du, ll (basic), plus history/setopt/bindkey defaults.
 
 # Shortcodes for common programs
 alias g='git'
@@ -28,15 +10,15 @@ alias dc='docker compose'
 alias k='kubectl'
 alias c='claude'
 
-# Linux general commands
-alias ls='ls --color=auto'
-alias ll='ls -lh'
-alias la='ls -lha'
-alias grep='grep --color=auto'
-alias reload='source ~/.bash_profile'
-function mkdcd() {
-    mkdir $1 && cd $1
-}
+# Modern Rust replacements (override zimfw/utility defaults)
+alias ls='eza --color=auto --icons=auto'
+alias ll='eza -lh --icons=auto --git'
+alias la='eza -lha --icons=auto --git'
+alias cat='bat --paging=never'
+
+# Misc
+alias reload='source ~/.zshrc'
+mkdcd() { mkdir -p "$1" && cd "$1"; }
 
 # Git
 alias gst='git status'
@@ -60,8 +42,3 @@ alias glss='git log --show-signature'
 alias gpurge='git branch && sleep 3 && git branch | grep -Ev "(main)" | xargs git branch -D'
 # Interactive clean of untracked files, preserving .env*
 alias gclean='git clean -Xfdi -e \!".env*"'
-
-# Starship prompt
-if command -v starship >/dev/null; then
-  eval "$(starship init bash)"
-fi

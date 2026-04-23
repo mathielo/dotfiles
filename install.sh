@@ -45,13 +45,14 @@ else
 fi
 
 # --- Symlink configs ---
-ln -isn "$DOTFILES/zshrc"       "$HOME/.zshrc"
-ln -isn "$DOTFILES/zimrc"       "$HOME/.zimrc"
-ln -isn "$DOTFILES/vimrc"       "$HOME/.vimrc"
-ln -isn "$DOTFILES/aliases.zsh" "$HOME/.aliases.zsh"
+# Only ~/.zshenv lives in $HOME — it sets ZDOTDIR so zsh reads everything
+# else from $DOTFILES/zdotdir/. vimrc is loaded via $VIMINIT (set in zshenv).
+ln -isn "$DOTFILES/zshenv" "$HOME/.zshenv"
 
-# Per-machine local overrides (copy, not symlink, so it can be tuned per-machine)
-cp -i "$DOTFILES/zshrc.local" "$HOME/.zshrc.local"
+# Per-machine local overrides: plain ~/.zshrc is unused by zsh once ZDOTDIR
+# is set, so we repurpose it as the local file. Copied (not symlinked) so
+# each machine can diverge.
+cp -i "$DOTFILES/zdotdir/zshrc.template" "$HOME/.zshrc"
 
 # Starship Gruvbox Rainbow preset — generated, not symlinked (upstream-tracked)
 starship preset gruvbox-rainbow -o "$HOME/.config/starship.toml"
@@ -75,5 +76,5 @@ Next:
 - Open a new terminal (log out/in if chsh was applied).
 - First zsh launch auto-installs zimfw plugins (a few seconds).
 - Set your terminal font to "MesloLGS NF" for the prompt glyphs.
-- Per-machine tweaks go in ~/.zshrc.local (ignored by the dotfiles repo).
+- Per-machine tweaks go in ~/.zshrc (ignored by the dotfiles repo).
 EOF

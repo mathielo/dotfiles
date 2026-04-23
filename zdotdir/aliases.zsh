@@ -1,4 +1,4 @@
-# Shell aliases and small functions. Sourced by ~/.zshrc.
+# Shell aliases and small functions. Sourced by $ZDOTDIR/.zshrc.
 #
 # These come *after* zimfw modules load, so overrides win.
 # Stock zimfw already provides: grep, df, du, ll (basic), plus history/setopt/bindkey defaults.
@@ -17,7 +17,7 @@ alias la='eza -lha --icons=auto --git'
 alias cat='bat --paging=never'
 
 # Misc
-alias reload='source ~/.zshrc'
+alias reload='source $ZDOTDIR/.zshrc'
 mkdcd() { mkdir -p "$1" && cd "$1"; }
 
 # Git

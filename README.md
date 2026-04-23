@@ -21,25 +21,24 @@ After the script finishes: log out and back in (or open a new terminal) and set 
    - Fedora: `sudo dnf install -y zsh starship fzf eza bat ripgrep fd-find`
    - macOS: `brew install zsh starship fzf eza bat ripgrep fd` + `brew install --cask font-meslo-lg-nerd-font`
 2. **Installs MesloLGS Nerd Font** (Fedora only) to `~/.local/share/fonts` from [romkatv/powerlevel10k-media](https://github.com/romkatv/powerlevel10k-media), then runs `fc-cache -f`. On macOS this is handled by the Homebrew cask above.
-3. **Symlinks configs** (prompts before overwriting):
+3. **Installs configs** (prompts before overwriting):
 
-   | Target                    | Source                            | Method                    |
-   | ------------------------- | --------------------------------- | ------------------------- |
-   | `~/.zshrc`                | `~/.dotfiles/zshrc`               | symlink                   |
-   | `~/.zimrc`                | `~/.dotfiles/zimrc`               | symlink                   |
-   | `~/.aliases.zsh`          | `~/.dotfiles/aliases.zsh`         | symlink                   |
-   | `~/.vimrc`                | `~/.dotfiles/vimrc`               | symlink                   |
-   | `~/.zshrc.local`          | `~/.dotfiles/zshrc.local`         | copy (per-machine tweaks) |
-   | `~/.config/starship.toml` | `starship preset gruvbox-rainbow` | generated                 |
+   | Target                    | Source                                  | Method                    |
+   | ------------------------- | --------------------------------------- | ------------------------- |
+   | `~/.zshenv`               | `~/.dotfiles/zshenv`                    | symlink                   |
+   | `~/.zshrc`                | `~/.dotfiles/zdotdir/zshrc.template`    | copy (per-machine tweaks) |
+   | `~/.config/starship.toml` | `starship preset gruvbox-rainbow`       | generated                 |
+
+   Only `~/.zshenv` lands in `$HOME`. It sets `ZDOTDIR="$HOME/.dotfiles/zdotdir"`, so zsh loads `.zshrc`, `.zimrc`, and `aliases.zsh` from inside the repo. It also sets `VIMINIT` to source `~/.dotfiles/vimrc` directly — no `~/.vimrc` symlink needed. Runtime data (zim plugins, zsh history, compdump) goes under `$XDG_DATA_HOME` / `$XDG_STATE_HOME` / `$XDG_CACHE_HOME`, keeping `$HOME` clean.
 
 4. **Configures git** globally: `core.editor=vim`, `commit.gpgsign=true`, `delta` as the pager (`core.pager`, `interactive.diffFilter`, `delta.navigate`, `merge.conflictstyle=zdiff3`).
 5. **Changes the default shell to zsh** via `chsh -s "$(command -v zsh)"`.
 
-zimfw itself is bootstrapped automatically on first zsh launch by `zshrc`, which downloads `zimfw.zsh` and runs `init` to pull all plugins listed in `zimrc`.
+zimfw itself is bootstrapped automatically on first zsh launch by `$ZDOTDIR/.zshrc`, which downloads `zimfw.zsh` and runs `init` to pull all plugins listed in `$ZDOTDIR/.zimrc`.
 
 ### Per-machine tweaks
 
-`~/.zshrc.local` is copied (not symlinked) so each machine can diverge. It's sourced at the end of `~/.zshrc` — use it for machine-specific PATH entries, aliases, or env vars. The repo's copy is just a commented template.
+Since `ZDOTDIR` is set, zsh ignores the plain `~/.zshrc` — we repurpose it as the per-machine overrides file. It's copied from `zdotdir/zshrc.template` (not symlinked) so each machine can diverge, and sourced at the end of `$ZDOTDIR/.zshrc`. Use it for machine-specific `PATH`, env vars, or aliases.
 
 ## Installed tools
 

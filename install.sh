@@ -24,11 +24,11 @@ echo ">> Detected OS: $OS"
 # --- Install packages ---
 if [[ "$OS" == "macos" ]]; then
   command -v brew >/dev/null || { echo "Install Homebrew first: https://brew.sh"; exit 1; }
-  brew install zsh starship zoxide fzf eza bat ripgrep fd git-delta
+  brew install zsh starship fzf eza bat ripgrep fd
   brew install --cask font-meslo-lg-nerd-font
 else
   sudo dnf copr enable atim/starship
-  sudo dnf install -y zsh starship zoxide fzf eza bat ripgrep fd-find git-delta
+  sudo dnf install -y zsh starship fzf eza bat ripgrep fd-find
 
   # MesloLGS Nerd Font (Fedora doesn't ship this specific one)
   FONT_DIR="$HOME/.local/share/fonts"
@@ -59,10 +59,6 @@ starship preset gruvbox-rainbow -o "$HOME/.config/starship.toml"
 # --- Git config ---
 git config --global core.editor "vim"
 git config --global commit.gpgsign true
-git config --global core.pager "delta"
-git config --global interactive.diffFilter "delta --color-only"
-git config --global delta.navigate true
-git config --global merge.conflictstyle "zdiff3"
 
 # --- Switch default shell to zsh ---
 ZSH_PATH="$(command -v zsh)"

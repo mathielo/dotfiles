@@ -19,15 +19,12 @@ source "$ZIM_HOME/init.zsh"
 # Starship prompt
 command -v starship >/dev/null && eval "$(starship init zsh)"
 
-# zoxide (smarter cd)
-command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
-
 # fzf keybindings (Ctrl-R history, Ctrl-T files, Alt-C dirs)
 if command -v fzf >/dev/null; then
   source <(fzf --zsh) 2>/dev/null || true
 fi
 
-# Aliases (shared)
+# Aliases
 [[ -f "$HOME/.aliases.zsh" ]] && source "$HOME/.aliases.zsh"
 
 # Per-machine overrides

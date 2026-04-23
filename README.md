@@ -18,8 +18,8 @@ After the script finishes: log out and back in (or open a new terminal) and set 
 ### What `install.sh` does
 
 1. **Installs packages** via the native package manager:
-   - Fedora: `sudo dnf install -y zsh starship zoxide fzf eza bat ripgrep fd-find git-delta`
-   - macOS: `brew install zsh starship zoxide fzf eza bat ripgrep fd git-delta` + `brew install --cask font-meslo-lg-nerd-font`
+   - Fedora: `sudo dnf install -y zsh starship fzf eza bat ripgrep fd-find`
+   - macOS: `brew install zsh starship fzf eza bat ripgrep fd` + `brew install --cask font-meslo-lg-nerd-font`
 2. **Installs MesloLGS Nerd Font** (Fedora only) to `~/.local/share/fonts` from [romkatv/powerlevel10k-media](https://github.com/romkatv/powerlevel10k-media), then runs `fc-cache -f`. On macOS this is handled by the Homebrew cask above.
 3. **Symlinks configs** (prompts before overwriting):
 
@@ -48,7 +48,6 @@ zimfw itself is bootstrapped automatically on first zsh launch by `zshrc`, which
 | Name                                             | What it does                                            | Quick example                                            |
 | ------------------------------------------------ | ------------------------------------------------------- | -------------------------------------------------------- |
 | [starship](https://github.com/starship/starship) | Cross-shell prompt (Gruvbox Rainbow preset)             | See [here](https://starship.rs/presets/#gruvbox-rainbow) |
-| [zoxide](https://github.com/ajeetdsouza/zoxide)  | Smarter `cd` with frecency                              | `z dot` jumps to `~/.dotfiles`                           |
 | [fzf](https://github.com/junegunn/fzf)           | Fuzzy finder — Ctrl-R history, Ctrl-T files, Alt-C dirs | `vim $(fzf)`                                             |
 | [eza](https://github.com/eza-community/eza)      | Modern `ls` with colors/icons/git status                | `ll`, `eza --tree`                                       |
 | [bat](https://github.com/sharkdp/bat)            | `cat` with syntax highlighting + git gutter             | `bat README.md`                                          |

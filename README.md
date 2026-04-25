@@ -15,6 +15,23 @@ Supported: **Fedora** and **macOS**. The script `sudo`s for package installs and
 
 After the script finishes: log out and back in (or open a new terminal) and set your terminal font to **MesloLGS NF**. First zsh launch auto-installs zimfw plugins (a few seconds).
 
+## 1Password + SSH keys
+
+The install command above **does not** automatically sets up SSH keys via 1Password. If cloning the `homelab` repository, its [ssh config](https://github.com/mathielo/homelab/blob/main/.config/ssh.config#L6-L13) already contains the necessary settings.
+
+Otherwise, write the GitHub 1P SSH key from 1Password into `~/.ssh/github_1p_ssh.pub`. Then add these to the top of `~/.ssh/config`:
+
+```
+# Use the 1Password agent to authenticate with all hosts
+Host *
+  IdentityAgent ~/.1password/agent.sock
+
+# Specify which key to use for GitHub authentication
+Host github.com
+  IdentityFile ~/.ssh/github_1p_ssh.pub
+  IdentitiesOnly yes
+```
+
 ### What `install.sh` does
 
 1. **Installs packages** via the native package manager:

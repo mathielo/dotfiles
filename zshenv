@@ -3,6 +3,4 @@
 export ZDOTDIR="$HOME/.dotfiles/zdotdir"
 
 # Editor
-export EDITOR=vim
-export VISUAL=vim
 export VIMINIT="source $HOME/.dotfiles/vimrc"

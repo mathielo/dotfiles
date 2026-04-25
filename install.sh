@@ -28,7 +28,7 @@ if [[ "$OS" == "macos" ]]; then
   brew install --cask font-meslo-lg-nerd-font
 else
   sudo dnf copr enable atim/starship
-  sudo dnf install -y zsh starship fzf eza bat ripgrep fd-find
+  sudo dnf install -y tilix vim zsh starship fzf eza bat ripgrep fd-find
 
   # MesloLGS Nerd Font (Fedora doesn't ship this specific one)
   FONT_DIR="$HOME/.local/share/fonts"

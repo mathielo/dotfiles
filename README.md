@@ -18,7 +18,7 @@ After the script finishes: log out and back in (or open a new terminal) and set 
 ### What `install.sh` does
 
 1. **Installs packages** via the native package manager:
-   - Fedora: `sudo dnf install -y zsh starship fzf eza bat ripgrep fd-find`
+   - Fedora: `sudo dnf install -y tilix vim zsh starship fzf eza bat ripgrep fd-find`
    - macOS: `brew install zsh starship fzf eza bat ripgrep fd` + `brew install --cask font-meslo-lg-nerd-font`
 2. **Installs MesloLGS Nerd Font** (Fedora only) to `~/.local/share/fonts` from [romkatv/powerlevel10k-media](https://github.com/romkatv/powerlevel10k-media), then runs `fc-cache -f`. On macOS this is handled by the Homebrew cask above.
 3. **Installs configs** (prompts before overwriting):

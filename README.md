@@ -7,8 +7,7 @@ Personal shell, prompt, and editor config for Fedora and macOS.
 ## Install
 
 ```sh
-git clone git@github.com:mathielo/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles && ./install.sh
+git clone git@github.com:mathielo/dotfiles.git ~/.dotfiles && ~/.dotfiles/install.sh
 ```
 
 Supported: **Fedora** and **macOS**. The script `sudo`s for package installs and may prompt for your password again at `chsh`.

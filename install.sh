@@ -60,6 +60,7 @@ starship preset gruvbox-rainbow -o "$HOME/.config/starship.toml"
 # --- Git config ---
 git config --global core.editor "vim"
 git config --global commit.gpgsign true
+git config --global push.autoSetupRemote true
 
 # --- Switch default shell to zsh ---
 ZSH_PATH="$(command -v zsh)"

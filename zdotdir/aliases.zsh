@@ -23,7 +23,7 @@ mkdcd() { mkdir -p "$1" && cd "$1"; }
 # Git
 alias gst='git status'
 alias gpom='git pull origin main'
-alias gpom='git pull origin develop'
+alias gpod='git pull origin develop'
 alias gc='git commit'
 alias gcm='git commit -m'
 alias gd='git diff'

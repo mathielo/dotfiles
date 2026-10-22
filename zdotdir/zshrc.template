@@ -1,5 +1,0 @@
-# ~/.zshrc — per-machine local overrides. Sourced at the end of
-# $ZDOTDIR/.zshrc. Use this for machine-specific PATH, env vars, aliases.
-
-#export PATH="$PATH:$HOME/.local/bin"
-#export KUBECONFIG="$HOME/.kube/config-k3s"

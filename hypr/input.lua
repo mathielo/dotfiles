@@ -44,8 +44,13 @@
 --   },
 -- })
 
+-- Left Ctrl + Right Ctrl switches keyboard layouts.
 hl.config({
   input = {
+    kb_layout = "us,us",
+    kb_variant = ",intl",
+    kb_options = hl.get_config("input.kb_options") .. ",grp:ctrls_toggle",
+
     touchpad = {
       natural_scroll = true,
     },

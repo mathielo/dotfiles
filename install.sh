@@ -48,6 +48,9 @@ else
   echo "added   ~/.bashrc → aliases.bash"
 fi
 
+# Hyprland: keybinding overrides, in the file Omarchy leaves for them.
+link "$DOTFILES/hypr/bindings.lua" ~/.config/hypr/bindings.lua
+
 # Git: include our config after Omarchy's ~/.config/git/config, so ours wins.
 if git config --global --get-all include.path | grep -qxF "$DOTFILES/git/config"; then
   echo "ok      git include"

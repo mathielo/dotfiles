@@ -1,0 +1,15 @@
+# ~/.ssh/config, linked by install.sh.
+#
+# Host blocks from other repos go in ~/.ssh/config.d/ (e.g. homelab links its
+# hosts there). The Include sits above every Host block so it applies globally.
+Include config.d/*
+
+# GitHub: offer only the 1Password key. The .pub file tells the agent which key to
+# use; install.sh writes it from 1Password.
+Host github.com
+  IdentityFile ~/.ssh/gh1p.pub
+  IdentitiesOnly yes
+
+# Authenticate everything through the 1Password SSH agent.
+Host *
+  IdentityAgent ~/.1password/agent.sock

@@ -1,0 +1,49 @@
+# Personal git settings, layered on top of Omarchy's ~/.config/git/config.
+# install.sh adds this file as an [include] at the end of that one, so these
+# values win where both set a key (e.g. init.defaultBranch, master in Omarchy).
+# user.name / user.email stay in Omarchy's file: its installer asks for them.
+
+[init]
+	defaultBranch = main
+
+# Sign every commit with the GitHub SSH key held in 1Password.
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /opt/1Password/op-ssh-sign
+[user]
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGqhllU7qTyNCD/Os5E0R7X1a6Gjl+QZ+95YfTEdhLDf
+
+# Shortcuts, run as `g <alias>` (Omarchy's `g` = git). Omarchy's own are co, br, ci, st.
+[alias]
+	a = add
+	i = add -i
+	d = diff
+	ds = diff --staged
+	s = show
+	cm = commit -m
+	bs = switch
+	bD = branch -D
+	p = push
+	pf = push -f
+	f = fetch -p
+	pom = pull origin main
+	pod = pull origin develop
+	l = log
+	ri = rebase -i
+	rc = rebase --continue
+	ra = rebase --abort
+	# Switch to the branch, pull it and prune remote-tracking refs.
+	main = "!git switch main && git pull origin main && git fetch -p"
+	master = "!git switch master && git pull origin master && git fetch -p"
+	ud = "!git switch develop && git pull origin develop && git fetch -p"
+	us = "!git switch staging && git pull origin staging && git fetch -p"
+	# Deletes all local branches except master (lists first, pauses 3s). --format drops
+	# the "* " marker on the current branch, which plain `git branch` would hand to
+	# xargs as a glob.
+	purge = "!git branch && sleep 3 && git branch --format='%(refname:short)' | grep -vx main | xargs -r git branch -D"
+	# Interactive clean of ignored files, preserving .env*. Not `clean`: git ignores
+	# aliases that shadow its own commands.
+	cln = clean -Xfdi -e !.env*

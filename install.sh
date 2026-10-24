@@ -16,6 +16,11 @@ HOST_DIR="$DOTFILES/hosts/$HOST"
 # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
 GITHUB_ED25519_FP="SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU"
 
+# Set by link() when it replaces a file in ~/.config/hypr. Hyprland's autoreload
+# doesn't notice a file being swapped for a symlink, so the end of this script
+# reloads it.
+hypr_relinked=0
+
 # link <source> <target>: symlink target → source, backing up whatever was there.
 link() {
   local src="$1" dst="$2"
@@ -30,6 +35,8 @@ link() {
   fi
   ln -s "$src" "$dst"
   echo "linked  $dst → $src"
+  [[ $dst == "$HOME/.config/hypr/"* ]] && hypr_relinked=1
+  return 0
 }
 
 # Terminal: Ghostty as the default, through Omarchy's installer (may ask for sudo).
@@ -92,4 +99,15 @@ if [[ -d $HOST_DIR ]]; then
   fi
 else
   echo "note    no hosts/$HOST/ — host-specific steps skipped"
+fi
+
+# Hyprland: reload if a file it loads was relinked and a session is running.
+if (( hypr_relinked )) && hyprctl version >/dev/null 2>&1; then
+  hyprctl reload >/dev/null
+  errors="$(hyprctl configerrors)"
+  if [[ -z ${errors//[[:space:]]/} ]]; then
+    echo "reload  Hyprland"
+  else
+    printf 'FAILED  Hyprland config errors after reload:\n%s\n' "$errors" >&2
+  fi
 fi

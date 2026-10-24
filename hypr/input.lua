@@ -57,6 +57,14 @@ hl.config({
   },
 })
 
+-- Mouse wheel scrolls further per notch (default: 1.0). The touchpad has its
+-- own touchpad.scroll_factor, so this leaves it alone.
+hl.config({
+  input = {
+    scroll_factor = 2.0,
+  },
+})
+
 -- App-specific touchpad scroll speeds.
 -- o.window("(Alacritty|kitty|foot)", { scroll_touchpad = 1.5 })
 -- o.window("com.mitchellh.ghostty", { scroll_touchpad = 0.2 })

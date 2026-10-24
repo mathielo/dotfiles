@@ -105,3 +105,17 @@ Both at scale 1. The layout is [`monitors.lua`](monitors.lua), linked to
 `omarchy-refresh-config hypr/monitors.lua`) copies Omarchy's default over it through the
 link, which shows up as a diff in this repo: `git checkout hosts/omy-space/monitors.lua`
 puts it back.
+
+## Audio
+
+A SteelSeries Arctis 7 headset, which shows up as two outputs: **Game** (stereo) and **Chat**
+(mono, alongside the mic). The headset's ChatMix dial balances the two, so a dial turned
+fully towards Chat leaves Game nearly silent. Game is the one to use.
+
+[`wireplumber-arctis-7.conf`](wireplumber-arctis-7.conf), linked into
+`~/.config/wireplumber/wireplumber.conf.d/` by `install.sh`, gives Game a higher priority
+than Chat and names both "Arctis 7 Game" / "Arctis 7 Chat" in the audio panel
+(`Super + Ctrl + A`). The priority only decides when nothing is chosen: an output picked
+in the panel or with `Shift + Mute` is remembered across reboots in
+`~/.local/state/wireplumber/default-nodes`. `wpctl status` marks the current default
+with `*`.

@@ -20,6 +20,8 @@ GITHUB_ED25519_FP="SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU"
 # doesn't notice a file being swapped for a symlink, so the end of this script
 # reloads it.
 hypr_relinked=0
+# Same for ~/.config/wireplumber, which WirePlumber only reads at startup.
+wp_relinked=0
 
 # link <source> <target>: symlink target → source, backing up whatever was there.
 link() {
@@ -36,6 +38,7 @@ link() {
   ln -s "$src" "$dst"
   echo "linked  $dst → $src"
   [[ $dst == "$HOME/.config/hypr/"* ]] && hypr_relinked=1
+  [[ $dst == "$HOME/.config/wireplumber/"* ]] && wp_relinked=1
   return 0
 }
 
@@ -94,11 +97,19 @@ fi
 # Host-specific files, if this machine has a hosts/ entry.
 if [[ -d $HOST_DIR ]]; then
   [[ -f $HOST_DIR/monitors.lua ]] && link "$HOST_DIR/monitors.lua" ~/.config/hypr/monitors.lua
+  [[ -f $HOST_DIR/wireplumber-arctis-7.conf ]] &&
+    link "$HOST_DIR/wireplumber-arctis-7.conf" ~/.config/wireplumber/wireplumber.conf.d/arctis-7.conf
   if [[ -f $HOST_DIR/memmap-badram.conf ]] && ! grep -q 'memmap=' /proc/cmdline; then
     echo "TODO    this boot has no memmap= — apply it per hosts/$HOST/README.md"
   fi
 else
   echo "note    no hosts/$HOST/ — host-specific steps skipped"
+fi
+
+# WirePlumber: restart if a drop-in was relinked and it's running.
+if (( wp_relinked )) && systemctl --user is-active --quiet wireplumber; then
+  systemctl --user restart wireplumber
+  echo "restart WirePlumber"
 fi
 
 # Hyprland: reload if a file it loads was relinked and a session is running.

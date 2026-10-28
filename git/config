@@ -19,10 +19,12 @@
 # Shortcuts, run as `g <alias>` (Omarchy's `g` = git). Omarchy's own are co, br, ci, st.
 [alias]
 	a = add
+	aa = add .
 	i = add -i
 	d = diff
 	ds = diff --staged
 	s = show
+	c = commit
 	cm = commit -m
 	bs = switch
 	bD = branch -D
@@ -40,7 +42,7 @@
 	master = "!git switch master && git pull origin master && git fetch -p"
 	ud = "!git switch develop && git pull origin develop && git fetch -p"
 	us = "!git switch staging && git pull origin staging && git fetch -p"
-	# Deletes all local branches except master (lists first, pauses 3s). --format drops
+	# Deletes all local branches except main (lists first, pauses 3s). --format drops
 	# the "* " marker on the current branch, which plain `git branch` would hand to
 	# xargs as a glob.
 	purge = "!git branch && sleep 3 && git branch --format='%(refname:short)' | grep -vx main | xargs -r git branch -D"

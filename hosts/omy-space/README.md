@@ -119,3 +119,11 @@ than Chat and names both "Arctis 7 Game" / "Arctis 7 Chat" in the audio panel
 in the panel or with `Shift + Mute` is remembered across reboots in
 `~/.local/state/wireplumber/default-nodes`. `wpctl status` marks the current default
 with `*`.
+
+The kernel's `hid-steelseries-arctis` driver leaves the headset with no sound, so it stays
+unloaded through [`blacklist-arctis.conf`](blacklist-arctis.conf), which takes effect on
+the next boot. `install.sh` prints a `TODO` until it's in place:
+
+```bash
+sudo install -m 644 ~/src/dotfiles/hosts/omy-space/blacklist-arctis.conf /etc/modprobe.d/
+```

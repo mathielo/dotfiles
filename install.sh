@@ -49,6 +49,16 @@ else
   omarchy-install-terminal ghostty
 fi
 
+# Mise: the global tools, Claude Code among them. Omarchy's lazy tools install on first
+# use, so `mise install` leaves them out and `mise ls --missing` always lists them.
+link "$DOTFILES/mise/config.toml" ~/.config/mise/config.toml
+if [[ "$(mise install --dry-run 2>&1)" == *"would install"* ]]; then
+  mise install
+  echo "added   mise tools"
+else
+  echo "ok      mise tools"
+fi
+
 # Shell: one source line at the end of Omarchy's ~/.bashrc, after its defaults.
 line="source \"$DOTFILES/bash/aliases.bash\""
 if grep -qxF "$line" ~/.bashrc; then
@@ -101,6 +111,13 @@ if [[ -d $HOST_DIR ]]; then
     link "$HOST_DIR/wireplumber-arctis-7.conf" ~/.config/wireplumber/wireplumber.conf.d/arctis-7.conf
   if [[ -f $HOST_DIR/memmap-badram.conf ]] && ! grep -q 'memmap=' /proc/cmdline; then
     echo "TODO    this boot has no memmap= — apply it per hosts/$HOST/README.md"
+  fi
+  if [[ -f $HOST_DIR/blacklist-arctis.conf ]]; then
+    if cmp -s "$HOST_DIR/blacklist-arctis.conf" /etc/modprobe.d/blacklist-arctis.conf; then
+      echo "ok      /etc/modprobe.d/blacklist-arctis.conf"
+    else
+      echo "TODO    hid-steelseries-arctis isn't blacklisted — apply it per hosts/$HOST/README.md"
+    fi
   fi
 else
   echo "note    no hosts/$HOST/ — host-specific steps skipped"

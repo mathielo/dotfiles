@@ -6,8 +6,13 @@ over them.
 ## Install
 
 Needs 1Password running and signed in, with **Use the SSH agent** and **Integrate with
-1Password CLI** on (Settings → Developer). Clone over HTTPS, since the SSH key only gets
-set up by `install.sh`:
+1Password CLI** on (Settings → Developer):
+
+```bash
+sudo pacman -S --needed 1password 1password-cli
+```
+
+Clone over HTTPS, since the SSH key only gets set up by `install.sh`:
 
 ```bash
 git clone https://github.com/mathielo/dotfiles ~/src/dotfiles

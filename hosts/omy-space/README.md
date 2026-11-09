@@ -54,10 +54,10 @@ parameter carries over to every new kernel. The drop-in is
 ```bash
 sudo install -m 644 ~/src/dotfiles/hosts/omy-space/memmap-badram.conf /etc/limine-entry-tool.d/
 sudo limine-mkinitcpio
-sudo grep -rl --text 'memmap=0x10000%0x175ce0000-1+2' /boot
+sudo grep -rl --text 'memmap=0x10000%0x175ce0000-1+2' /efi
 ```
 
-The `grep` must print at least one file under `/boot`: with Omarchy's UKI setup, both
+The `grep` must print at least one file under `/efi`: with Omarchy's UKI setup, both
 `EFI/Linux/omarchy_linux-omarchy.efi` and `limine.conf`. Snapshot boot entries made before
 the drop-in existed don't carry the parameter, so boot the default entry. After rebooting,
 confirm the hole exists:
@@ -92,6 +92,21 @@ To remove it, delete the drop-in and run `sudo limine-mkinitcpio` again.
 
 4. Round the reported span outward to 64 KB boundaries: the start down to a multiple of
    `0x10000`, and the size up to a multiple of `0x10000`.
+
+## Boot menu
+
+Dual boot with Fedora, which has its own EFI partition (`nvme0n1p2`). Limine shows a menu for
+2 seconds, then boots Omarchy. Limine's automatic search only covers its own partition, so
+Fedora's entry is added from the firmware's boot entries:
+
+```bash
+sudo limine-scan   # select Fedora only
+sudo sed -i -E 's/^timeout:.*/timeout: 2/; s/^quiet:.*/quiet: no/' /efi/limine.conf
+```
+
+`quiet: yes`, Omarchy's default, hides the menu until a key is pressed. `default_entry: 2`
+is `linux-omarchy`, because the `Omarchy` folder counts as entry 1. Entry rebuilds keep these
+settings, but `omarchy refresh limine` overwrites them, so run both commands again after it.
 
 ## Monitors
 
